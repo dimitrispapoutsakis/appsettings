@@ -1,1 +1,1 @@
-export { AppSettings } from './helpers/appSettings';
+export { AppSettings } from './helpers/AppSettings';

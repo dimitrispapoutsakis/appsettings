@@ -2,16 +2,12 @@ import './index.css';
 import { AppSettings } from 'appsettings';
 
 const appSettings = new AppSettings({
-  hasAppSettingsLoaded: false,
-  user: {
-    id: 1,
-    name: 'John Doe',
-  },
-  hashcode: '1234567890',
   uiTheme: 'light',
   locale: 'en-US',
 });
 
+
+console.log(appSettings.get());
 /* appSettings.on('change', (newAppSettings) => {
   console.log(newAppSettings);
 }); */
