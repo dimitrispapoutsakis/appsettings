@@ -1,14 +1,16 @@
+import { TEvent } from "@typings";
+
 export class EventEmitter {
   private events: Record<string, Function[]> = {};
 
-  public on(event: string, callback: Function): void {
+  public on(event: TEvent, callback: Function): void {
     if (!this.events[event]) {
       this.events[event] = [];
     }
     this.events[event].push(callback);
   }
 
-  public off(event: string, callback: Function): void {
+  public off(event: TEvent, callback: Function): void {
     if (!this.events[event]) return;
     
     const index = this.events[event].indexOf(callback);
@@ -17,7 +19,7 @@ export class EventEmitter {
     }
   }
 
-  public emit(event: string, ...args: any[]): void {
+  public emit(event: TEvent, ...args: any[]): void {
     if (!this.events[event]) return;
     
     this.events[event].forEach(callback => {

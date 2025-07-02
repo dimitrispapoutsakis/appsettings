@@ -1,25 +1,29 @@
 import { TAppSettings } from "@typings";
+import { EventEmitter } from "./EventEmitter";
 
-export class AppSettings {
+export class AppSettings extends EventEmitter {
   private appSettings: TAppSettings;
 
   constructor(appSettings: TAppSettings) {
+    super();
     this.appSettings = appSettings;
     this.load();
   }
 
   public get = () => this.appSettings;
 
-  public set = (key: string, value: any) => localStorage.setItem(key, value);
+  public set = (key: string, value: any) => {
+    localStorage.setItem(key, value);
+    this.appSettings[key] = value;
+    this.emit('change', this.appSettings);
+  }
 
   public getSingle = (key: string) => localStorage.getItem(key);
 
-  public delete = (key: string) => localStorage.removeItem(key);
-
-  public on = (event: string, callback: (newAppSettings: TAppSettings) => void) => {
-    if (event === 'change') {
-      callback(this.appSettings);
-    }
+  public delete = (key: string) => {
+    localStorage.removeItem(key);
+    delete this.appSettings[key];
+    this.emit('change', this.appSettings);
   }
 
   private parseAppSettings = (appSettingsString: string) => JSON.parse(appSettingsString);
@@ -52,12 +56,17 @@ export class AppSettings {
   public update = () => {
     // this.setAppSettings();
     this.save();
+    this.emit('change', this.appSettings);
   }
 
   /* @ts-ignore */
-  public save = () => localStorage.setItem('appSettings', this.stringifyAppSettings());
+  public save = () => {
+    localStorage.setItem('appSettings', this.stringifyAppSettings());
+    this.emit('change', this.appSettings);
+  }
 
   public reset = () => {
     this.save();
+    this.emit('change', this.appSettings);
   };
 }
