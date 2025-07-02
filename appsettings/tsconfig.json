@@ -9,7 +9,11 @@
     "resolveJsonModule": true,
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "paths": {
+      "*": ["./@mf-types/*"],
+      "reactuploadform": ["../react-upload-form/dist/index.d.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src"],
 }
