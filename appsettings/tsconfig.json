@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
     "lib": ["ES2021"],
     "module": "ESNext",
     "noEmit": true,
@@ -12,7 +13,9 @@
     "allowImportingTsExtensions": true,
     "paths": {
       "*": ["./@mf-types/*"],
-      "reactuploadform": ["../react-upload-form/dist/index.d.ts"]
+			"@typings": ["typings.ts"],
+			"@helpers/*": ["helpers/*"],
+      "appsettings": ["../appsettings/dist/index.d.ts"]
     }
   },
   "include": ["src"],

@@ -1,7 +1,20 @@
 import './index.css';
-import { squared } from 'appsettings';
+import { AppSettings } from 'appsettings';
 
-console.log(squared(2))
+const appSettings = new AppSettings({
+  hasAppSettingsLoaded: false,
+  user: {
+    id: 1,
+    name: 'John Doe',
+  },
+  hashcode: '1234567890',
+  uiTheme: 'light',
+  locale: 'en-US',
+});
+
+/* appSettings.on('change', (newAppSettings) => {
+  console.log(newAppSettings);
+}); */
 
 const rootEl = document.querySelector('#root');
 if (rootEl) {

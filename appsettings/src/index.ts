@@ -1,1 +1,1 @@
-export const squared = (n: number): number => n * n;
+export { AppSettings } from './helpers/appSettings';
