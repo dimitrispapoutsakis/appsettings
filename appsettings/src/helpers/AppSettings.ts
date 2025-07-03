@@ -16,7 +16,9 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
     }
   }
 
-  public get = () => this.appSettings;
+  public get<K extends keyof T>(key: K): T[K] {
+    return this.appSettings[key];
+  }
 
   public set = (key: string, value: any) => {
     localStorage.setItem(key, value);
