@@ -3,5 +3,5 @@ export declare class EventEmitter {
     private events;
     on(event: TEvent, callback: Function): void;
     off(event: TEvent, callback: Function): void;
-    emit(event: TEvent, ...args: any[]): void;
+    protected emit(event: TEvent, ...args: any[]): void;
 }

@@ -1,4 +1,4 @@
-import { TAppSettings } from "@typings";
+import { TAppSettings, TEvent } from "@typings";
 import { EventEmitter } from "./EventEmitter";
 import { PropertyEventEmitter } from "./PropertyEventEmitter";
 
@@ -85,4 +85,8 @@ export class AppSettings extends EventEmitter {
     this.save();
     this.emit('change', this.appSettings);
   };
+
+ /*  public override emit = (event: TEvent, ...args: any[]): void => {
+    throw new Error('emit is protected to prevent unintetional usage.');
+  } */
 }

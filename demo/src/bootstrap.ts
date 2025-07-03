@@ -14,7 +14,8 @@ appSettings.locale.on('change', (newLocale) => {
   console.warn('on change', newLocale);
 });
 
-console.log(appSettings.uiTheme);
+// console.log(appSettings.uiTheme);
+appSettings.emit('change', appSettings);
 
 const rootEl = document.querySelector('#root');
 if (rootEl) {
