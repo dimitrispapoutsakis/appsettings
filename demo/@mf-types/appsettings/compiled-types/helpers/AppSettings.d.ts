@@ -3,6 +3,7 @@ import { EventEmitter } from "./EventEmitter";
 export declare class AppSettings extends EventEmitter {
     private appSettings;
     constructor(appSettings: TAppSettings);
+    private assignSettingsToThis;
     get: () => TAppSettings;
     set: (key: string, value: any) => void;
     getSingle: (key: string) => string | null;

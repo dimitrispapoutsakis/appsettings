@@ -1,5 +1,6 @@
 import { TAppSettings } from "@typings";
 import { EventEmitter } from "./EventEmitter";
+import { PropertyEventEmitter } from "./PropertyEventEmitter";
 
 export class AppSettings extends EventEmitter {
   private appSettings: TAppSettings;
@@ -7,7 +8,14 @@ export class AppSettings extends EventEmitter {
   constructor(appSettings: TAppSettings) {
     super();
     this.appSettings = appSettings;
+    this.assignSettingsToThis(appSettings);
     this.load();
+  }
+
+  private assignSettingsToThis = (appSettings: TAppSettings) => {
+    for (const key in appSettings) {
+      (this as any)[key] = new PropertyEventEmitter(this, key, appSettings[key]);
+    }
   }
 
   public get = () => this.appSettings;
@@ -15,6 +23,12 @@ export class AppSettings extends EventEmitter {
   public set = (key: string, value: any) => {
     localStorage.setItem(key, value);
     this.appSettings[key] = value;
+    
+    // Update the property event emitter's internal value without calling its set method
+    if ((this as any)[key] && (this as any)[key] instanceof PropertyEventEmitter) {
+      (this as any)[key].value = value;
+    }
+    
     this.emit('change', this.appSettings);
   }
 
@@ -44,10 +58,12 @@ export class AppSettings extends EventEmitter {
     let appSettings = localStorage.getItem('appSettings') as string | null | TAppSettings;
 
     if (appSettings) {
-      appSettings = this.parseAppSettings(appSettings as string);
-      this.setAppSettings(appSettings);
+      const parsedSettings = this.parseAppSettings(appSettings as string);
+      this.setAppSettings(parsedSettings);
+      // Reassign property event emitters with loaded values
+      this.assignSettingsToThis(parsedSettings);
     } else {
-      this.setAppSettings(appSettings);
+      this.setAppSettings(this.appSettings);
     }
 
     this.save();
