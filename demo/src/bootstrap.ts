@@ -7,7 +7,7 @@ const appSettings = new AppSettings({
 });
 
 appSettings.on('change', (newAppSettings) => {
-  console.warn('on change', newAppSettings);
+  console.warn('on change', newAppSettings.uiTheme);
 });
 
 appSettings.locale.on('change', (newLocale) => {

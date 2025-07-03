@@ -1,9 +1,9 @@
 import { TEvent } from "@typings";
 
-export class EventEmitter {
+export class EventEmitter<T extends object> {
   private events: Record<string, Function[]> = {};
 
-  public on(event: TEvent, callback: Function): void {
+  public on(event: TEvent, callback: (appSettings: T) => void): void {
     if (!this.events[event]) {
       this.events[event] = [];
     }

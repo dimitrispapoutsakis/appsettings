@@ -2,10 +2,8 @@ import { TAppSettings, TEvent } from "@typings";
 import { EventEmitter } from "./EventEmitter";
 import { PropertyEventEmitter } from "./PropertyEventEmitter";
 
-export class AppSettings extends EventEmitter {
-  private appSettings: TAppSettings;
-
-  constructor(appSettings: TAppSettings) {
+export class AppSettings<T extends object> extends EventEmitter<T> {
+  constructor(private appSettings: T) {
     super();
     this.appSettings = appSettings;
     this.assignSettingsToThis(appSettings);
@@ -22,7 +20,7 @@ export class AppSettings extends EventEmitter {
 
   public set = (key: string, value: any) => {
     localStorage.setItem(key, value);
-    this.appSettings[key] = value;
+    this.appSettings[key as keyof T] = value;
     
     // Update the property event emitter's internal value without calling its set method
     if ((this as any)[key] && (this as any)[key] instanceof PropertyEventEmitter) {
@@ -34,8 +32,8 @@ export class AppSettings extends EventEmitter {
 
   public pick = (key: string) => localStorage.getItem(key);
 
-  public delete = (key: string) => {
-    localStorage.removeItem(key);
+  public delete = (key: keyof T) => {
+    localStorage.removeItem(key as string);
     delete this.appSettings[key];
     this.emit('change', this.appSettings);
   }
@@ -52,7 +50,7 @@ export class AppSettings extends EventEmitter {
       setAppSettings( this.appSettings );
     } */
 
-  private setAppSettings = (appSettings: TAppSettings | string | null) => this.appSettings = appSettings as TAppSettings;
+  private setAppSettings = (appSettings: T | string | null) => this.appSettings = appSettings as T;
 
   private loadAppSettings = () => {
     let appSettings = localStorage.getItem('appSettings') as string | null | TAppSettings;
@@ -75,7 +73,6 @@ export class AppSettings extends EventEmitter {
     this.emit('change', this.appSettings);
   }
 
-  /* @ts-ignore */
   public save = () => {
     localStorage.setItem('appSettings', this.stringifyAppSettings());
     this.emit('change', this.appSettings);
