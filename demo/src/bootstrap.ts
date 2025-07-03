@@ -1,21 +1,16 @@
 import './index.css';
 import { AppSettings } from 'appsettings';
 
-interface IAppSettings {
-  uiTheme: string;
-  locale: string;
-}
-
 const appSettings = new AppSettings({
   uiTheme: 'light',
   locale: 'en-US',
 });
 
-appSettings.on('change', (newAppSettings: IAppSettings) => {
+appSettings.on('change', (newAppSettings) => {
   console.warn('on change', newAppSettings);
 });
 
-appSettings.locale.on('change', (newLocale: IAppSettings) => {
+appSettings.locale.on('change', (newLocale) => {
   console.warn('on change', newLocale);
 });
 

@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "paths": {
       "*": ["./@mf-types/*"],
-      // "reactuploadform": ["../react-upload-form/dist/index.d.ts"]
+      "appsettings": ["../appsettings/dist/index.d.ts"]
     }
   },
   "include": ["src"]

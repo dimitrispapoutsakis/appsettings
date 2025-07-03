@@ -5,7 +5,7 @@ export class PropertyEventEmitter extends EventEmitter {
   private key: string;
   public value: any;
 
-  constructor(parent, key: string, value: any) {
+  constructor(parent: any, key: string, value: any) {
     super();
     this.parent = parent;
     this.key = key;
