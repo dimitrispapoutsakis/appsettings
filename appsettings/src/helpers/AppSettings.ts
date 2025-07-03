@@ -10,7 +10,7 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
     this.load();
   }
 
-  private assignSettingsToThis = (appSettings: TAppSettings) => {
+  private assignSettingsToThis = (appSettings: T) => {
     for (const key in appSettings) {
       (this as any)[key] = new PropertyEventEmitter(this, key, appSettings[key]);
     }
