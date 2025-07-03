@@ -32,7 +32,7 @@ export class AppSettings extends EventEmitter {
     this.emit('change', this.appSettings);
   }
 
-  public getSingle = (key: string) => localStorage.getItem(key);
+  public pick = (key: string) => localStorage.getItem(key);
 
   public delete = (key: string) => {
     localStorage.removeItem(key);

@@ -6,7 +6,7 @@ export declare class AppSettings extends EventEmitter {
     private assignSettingsToThis;
     get: () => TAppSettings;
     set: (key: string, value: any) => void;
-    getSingle: (key: string) => string | null;
+    pick: (key: string) => string | null;
     delete: (key: string) => void;
     private parseAppSettings;
     private stringifyAppSettings;
