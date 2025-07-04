@@ -10,6 +10,11 @@ appSettings.on('change', (newAppSettings) => {
   console.warn('on change', newAppSettings.uiTheme);
 });
 
+
+appSettings.onLoad((appSettings) => {
+  console.warn('on load', appSettings);
+});
+
 appSettings.locale.on('change', (newLocale) => {
   console.warn('on change', newLocale);
 });

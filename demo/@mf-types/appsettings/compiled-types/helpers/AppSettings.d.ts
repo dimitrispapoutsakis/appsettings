@@ -1,18 +1,18 @@
-import { TAppSettings } from "@typings";
 import { EventEmitter } from "./EventEmitter";
-export declare class AppSettings extends EventEmitter {
+export declare class AppSettings<T extends object> extends EventEmitter<T> {
     private appSettings;
-    constructor(appSettings: TAppSettings);
+    private _onLoad;
+    constructor(appSettings: T);
+    onLoad: (onLoad: (appSettings: T) => void) => void;
     private assignSettingsToThis;
-    get: () => TAppSettings;
+    get<K extends keyof T>(key: K): T[K];
     set: (key: string, value: any) => void;
     pick: (key: string) => string | null;
-    delete: (key: string) => void;
+    delete: (key: keyof T) => void;
     private parseAppSettings;
     private stringifyAppSettings;
-    load: () => void;
     private setAppSettings;
-    private loadAppSettings;
+    private load;
     update: () => void;
     save: () => void;
     reset: () => void;

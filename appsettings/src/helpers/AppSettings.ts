@@ -3,11 +3,18 @@ import { EventEmitter } from "./EventEmitter";
 import { PropertyEventEmitter } from "./PropertyEventEmitter";
 
 export class AppSettings<T extends object> extends EventEmitter<T> {
-  constructor(private appSettings: T) {
+  private appSettings: T;
+  private _onLoad: (_onLoad: (appSettings: T) => void) => void = () => { };
+
+  constructor(appSettings: T) {
     super();
     this.appSettings = appSettings;
     this.assignSettingsToThis(appSettings);
     this.load();
+  }
+
+  public onLoad = (onLoad: (appSettings: T) => void) => {
+    this._onLoad = () => onLoad(this.appSettings);
   }
 
   private assignSettingsToThis = (appSettings: T) => {
@@ -23,12 +30,12 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
   public set = (key: string, value: any) => {
     localStorage.setItem(key, value);
     this.appSettings[key as keyof T] = value;
-    
+
     // Update the property event emitter's internal value without calling its set method
     if ((this as any)[key] && (this as any)[key] instanceof PropertyEventEmitter) {
       (this as any)[key].value = value;
     }
-    
+
     this.emit('change', this.appSettings);
   }
 
@@ -44,8 +51,6 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
 
   private stringifyAppSettings = () => JSON.stringify(this.appSettings);
 
-  public load = () => this.loadAppSettings();
-
   /*   public reload = ( newAppSettings: TAppSettings ) => {
       const { setAppSettings } = appSettingsStore();
       this.appSettings = newAppSettings;
@@ -54,7 +59,7 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
 
   private setAppSettings = (appSettings: T | string | null) => this.appSettings = appSettings as T;
 
-  private loadAppSettings = () => {
+  private load = () => {
     let appSettings = localStorage.getItem('appSettings') as string | null | TAppSettings;
 
     if (appSettings) {
@@ -67,6 +72,12 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
     }
 
     this.save();
+
+    if (this._onLoad) {
+      setTimeout(() => {
+        this._onLoad(this.appSettings as any);
+      }, 0);
+    }
   };
 
   public update = () => {
@@ -85,7 +96,7 @@ export class AppSettings<T extends object> extends EventEmitter<T> {
     this.emit('change', this.appSettings);
   };
 
- /*  public override emit = (event: TEvent, ...args: any[]): void => {
-    throw new Error('emit is protected to prevent unintetional usage.');
-  } */
+  /*  public override emit = (event: TEvent, ...args: any[]): void => {
+     throw new Error('emit is protected to prevent unintetional usage.');
+   } */
 }

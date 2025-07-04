@@ -1,5 +1,5 @@
 import { EventEmitter } from "./EventEmitter";
-export declare class PropertyEventEmitter extends EventEmitter {
+export declare class PropertyEventEmitter<T extends object> extends EventEmitter<T> {
     private parent;
     private key;
     value: any;
